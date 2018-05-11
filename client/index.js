@@ -8,11 +8,17 @@ const svg = d3
   .attr('width', width)
   .attr('height', height);
 
-svg
-  .append('circle')
-  .attr('r', 5)
-  .attr('cx', width / 2)
-  .attr('cy', height / 2);
+const data = d3
+  .range(10)
+  .map(() => ({x: Math.random() * width, y: Math.random() * height}));
+
+data.forEach(d => {
+  svg
+    .append('circle')
+    .attr('r', 5)
+    .attr('cx', d.x)
+    .attr('cy', d.y);
+});
 
 const circles = svg.selectAll('circle');
 console.log(circles.size());
