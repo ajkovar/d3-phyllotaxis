@@ -8,17 +8,27 @@ const svg = d3
   .attr('width', width)
   .attr('height', height);
 
-const data = count =>
-  d3
-    .range(count)
-    .map(() => ({x: Math.random() * width, y: Math.random() * height}));
+function phyllotaxis(radius, theta) {
+  return function(i) {
+    var r = radius * Math.sqrt(i) / 2,
+      a = theta * i;
+    return {
+      x: width / 2 + r * Math.cos(a),
+      y: height / 2 + r * Math.sin(a)
+    };
+  };
+}
+
+const data = (count, f) => d3.range(count).map(f);
 
 const transition = d3.transition().duration(1000);
+
+let count = 0;
 
 document.querySelector('button').addEventListener('click', () => {
   const circles = svg
     .selectAll('circle')
-    .data(data(Math.round(Math.random() * 10)), (d, i) => i);
+    .data(data(30, phyllotaxis(50, ++count)), (d, i) => i);
 
   circles
     .transition(transition)
