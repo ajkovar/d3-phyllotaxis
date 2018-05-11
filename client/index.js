@@ -8,15 +8,30 @@ const svg = d3
   .attr('width', width)
   .attr('height', height);
 
-const data = () =>
+const data = count =>
   d3
-    .range(10)
+    .range(count)
     .map(() => ({x: Math.random() * width, y: Math.random() * height}));
 
-const circles = svg.selectAll('circle').data(data(), (d, i) => i);
+const transition = d3.transition().duration(1000);
 
-circles
-  .append('circle')
-  .attr('r', 5)
-  .attr('cx', d => d.x)
-  .attr('cy', d => d.y);
+document.querySelector('button').addEventListener('click', () => {
+  const circles = svg
+    .selectAll('circle')
+    .data(data(Math.round(Math.random() * 10)), (d, i) => i);
+
+  circles
+    .transition(transition)
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y)
+    .attr('fill', 'blue');
+
+  circles
+    .enter()
+    .append('circle')
+    .attr('r', 5)
+    .attr('cx', d => d.x)
+    .attr('cy', d => d.y);
+
+  circles.exit().remove();
+});
