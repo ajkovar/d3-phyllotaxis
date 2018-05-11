@@ -7,3 +7,6 @@ const svg = d3
   .select('svg')
   .attr('width', width)
   .attr('height', height);
+
+const circles = svg.selectAll('circle');
+console.log(circles.size());
