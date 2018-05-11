@@ -1,7 +1,7 @@
 import * as d3 from 'd3';
 
-const width = 300;
-const height = 300;
+const width = 600;
+const height = 600;
 
 const svg = d3
   .select('svg')
@@ -18,27 +18,36 @@ function phyllotaxis(radius, theta) {
     };
   };
 }
-
 const data = (count, f) => d3.range(count).map(f);
 
 const transition = d3.transition().duration(1000);
 
-let count = 0;
+let count = 200;
+
+const color = d3
+  .scaleLinear()
+  .domain([0, count])
+  .interpolate(d3.interpolateRgb.gamma(3))
+  .range([d3.rgb('#f00'), d3.rgb('#00f')]);
+
+let angle = 0;
 
 document.querySelector('button').addEventListener('click', () => {
   const circles = svg
     .selectAll('circle')
-    .data(data(30, phyllotaxis(50, ++count)), (d, i) => i);
+    .data(data(count, phyllotaxis(50, ++angle)), (d, i) => i);
 
   circles
+    .interrupt()
     .transition(transition)
+    .style('fill', (d, i) => color(i))
     .attr('cx', d => d.x)
-    .attr('cy', d => d.y)
-    .attr('fill', 'blue');
+    .attr('cy', d => d.y);
 
   circles
     .enter()
     .append('circle')
+    .style('fill', (d, i) => color(i))
     .attr('r', 5)
     .attr('cx', d => d.x)
     .attr('cy', d => d.y);
