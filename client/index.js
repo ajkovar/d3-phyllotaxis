@@ -8,5 +8,11 @@ const svg = d3
   .attr('width', width)
   .attr('height', height);
 
+svg
+  .append('circle')
+  .attr('r', 5)
+  .attr('cx', width / 2)
+  .attr('cy', height / 2);
+
 const circles = svg.selectAll('circle');
 console.log(circles.size());
